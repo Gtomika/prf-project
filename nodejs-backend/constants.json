@@ -1,0 +1,5 @@
+{
+    "apiRoute": "/api",
+    "angularDist": "dist",
+    "angularFrontendName": "angular-frontend"
+}

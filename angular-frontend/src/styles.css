@@ -1,0 +1,88 @@
+/* You can add global styles to this file, and also import other style files */
+
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background-color: black;
+    height: 100%;
+    overflow: hidden;
+}
+
+h3 {
+    color: darkgrey;
+}
+
+a {
+    color: darksalmon;
+}
+
+span {
+    color: darkgrey;
+}
+
+hr {
+	border: 0;
+	border-top: 1px solid darkgrey;
+}
+
+#header {
+    background-color: black;
+    width: 100%;
+}
+
+#siteIcon {
+    display:inline-block; 
+    max-width: 80px; 
+    max-height: 80px; 
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+#navbar {
+    height:30px;
+    background-color:#000;
+}
+    
+#navbar ul {
+    margin:0 auto 0 auto;
+}
+    
+#navbar ul li {
+    float:left;
+    color:darkgrey;
+    padding:0 20px 0 20px;
+    border-right:1px solid #FFF;
+    border-left:1px solid #FFF;
+    height:30px;
+    list-style:none;
+    display:block;
+    line-height:30px;
+    text-align:center;
+    cursor:pointer;
+}
+    
+#navbar ul li:hover {
+    background-color:#CCC;
+    color: black;
+}
+
+#routerContent {
+    width: 100%;
+    height: 75%;
+    background-color: black;
+}
+
+#footer {
+    background-color: black;
+    width: 100%;
+}
