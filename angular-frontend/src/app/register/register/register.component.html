@@ -1,0 +1,17 @@
+<div id="registerRoot">
+    <div id="registerBox">
+        <b style="margin: 20px; font-size: large;">Regisztráció</b>
+        <div style="margin: 20px;">
+            <span>Felhasználónév:  </span>
+            <input type="text" placeholder="felhasználónév..." [(ngModel)]="username">
+        </div>
+        <div style="margin: 20px;">
+            <span>Jelszó:  </span>
+            <input type="password" placeholder="jelszó..." [(ngModel)]="password">
+        </div>
+        <div>
+            <button (click)="onRegisterClick()" style="margin: 20px; float: left;">Regisztáció</button>
+            <u style="margin: 20px; float: right;" (click)="onLoginClick()">Már van fiókom</u>
+        </div>
+    </div>
+</div>

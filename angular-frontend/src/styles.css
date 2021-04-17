@@ -21,6 +21,10 @@ h3 {
     color: darkgrey;
 }
 
+h2 {
+    color: darkgray;
+}
+
 a {
     color: darksalmon;
 }
@@ -34,55 +38,19 @@ hr {
 	border-top: 1px solid darkgrey;
 }
 
-#header {
-    background-color: black;
-    width: 100%;
+p {
+    color: darkgray;
 }
 
-#siteIcon {
-    display:inline-block; 
-    max-width: 80px; 
-    max-height: 80px; 
-    position: absolute;
-    top: 5px;
-    right: 5px;
+table, th, td {
+    border: 1px solid darkgray;
 }
 
-#navbar {
-    height:30px;
-    background-color:#000;
-}
-    
-#navbar ul {
-    margin:0 auto 0 auto;
-}
-    
-#navbar ul li {
-    float:left;
-    color:darkgrey;
-    padding:0 20px 0 20px;
-    border-right:1px solid #FFF;
-    border-left:1px solid #FFF;
-    height:30px;
-    list-style:none;
-    display:block;
-    line-height:30px;
-    text-align:center;
-    cursor:pointer;
-}
-    
-#navbar ul li:hover {
-    background-color:#CCC;
-    color: black;
+b {
+    color: darkgray;
 }
 
-#routerContent {
-    width: 100%;
-    height: 75%;
-    background-color: black;
-}
-
-#footer {
-    background-color: black;
-    width: 100%;
+u {
+    color: darkgray;
+    cursor: pointer;
 }

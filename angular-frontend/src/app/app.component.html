@@ -2,12 +2,14 @@
   <h3>PRF sakk áruház</h3>
   <div id="navbar">
     <ul>
-        <li>Főoldal</li>
-        <li>Termékek</li>
-        <li>Rólunk</li>
+        <li (click)="onHomeClicked()">Főoldal</li>
+        <li (click)="onProductsClicked()">Termékek</li>
+        <li (click)="onAboutClicked()">Rólunk</li>
+        <li (click)="onLoginLogoutClicked()" id="loginLogoutButton">{{loginLogoutButtonText}}</li>
     </ul>
   </div>
-  <img src="assets/chess_icon.png" id="siteIcon">
+  <img src="assets/chess_icon.png" id="siteIcon" (click)="onHomeClicked()">
+  <span id="loginLogoutStatus">{{loginLogoutStatusText}}</span>
 </div>
 
 <hr>
