@@ -1,5 +1,7 @@
 {
+    "isDebug": "true",
     "apiRoute": "/api",
     "angularDist": "dist",
-    "angularFrontendName": "angular-frontend"
+    "angularFrontendName": "angular-frontend",
+    "mongoConnectionStringDebug": "mongodb://localhost:27017/?readPreference=primary&ssl=false"
 }

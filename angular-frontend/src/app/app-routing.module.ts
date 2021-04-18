@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AboutComponent } from './about/about/about.component';
 import { ErrorComponent } from './error/error/error.component';
+import { LoginGuard } from './guards/login.guard';
 import { HomepageComponent } from './homepage/homepage/homepage.component';
-import { LoginComponent } from './login/login/login.component';
+import { LoginComponent } from './login/login.component';
 import { ProductsComponent } from './products/products/products.component';
-import { RegisterComponent } from './register/register/register.component';
+import { RegisterComponent } from './register/register.component';
 
 const routes: Routes = [
   //a root URL a login-ra irányít
@@ -13,9 +14,9 @@ const routes: Routes = [
   //egyéb útvonalak
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
-  {path: 'home', component: HomepageComponent},
-  {path: 'products', component: ProductsComponent},
-  {path: 'about', component: AboutComponent},
+  {path: 'home', component: HomepageComponent, canActivate: [LoginGuard]},
+  {path: 'products', component: ProductsComponent, canActivate: [LoginGuard]},
+  {path: 'about', component: AboutComponent, canActivate: [LoginGuard]},
   //wildcard a hibás URL-ek elfogására
   {path: '**', component: ErrorComponent}
 ];

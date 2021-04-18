@@ -23,7 +23,7 @@ Az alábbiak az alkalmazáshoz tartozó legfontosabb linkek.
 \section{A fejlesztés menete}
 
 Itt részletesebben leírom, hogy egyes commitok mit adtak hozzá, vagy változtattak meg. Minden esetben megadok egy linket is a 
-commitra, hogy ez ellenőrizhető legyen.
+commitra, hogy ez ellenőrizhető legyen. A commitokban ezt a dokumentációt is megváltoztatom, de ezt nem írom itt le. Az olyan commitok nem kerülnek ide, ahol csak a dokumentációt frissítettem. 
 
 \subsection{Alapozás}
 
@@ -37,6 +37,30 @@ Ez a commit \href{https://github.com/Gtomika/prf-project/commit/170975c76199384b
 
 Létrehoztam a projekt struktúráját, majd az Angularos és a NodeJS projekteket. Eldöntöttem, hogy az angular alkalmazást a NodeJS szerver fogja hostolni, és kidolgoztam ennek a módját. 
 Letöltöttem a szükséges \textit{npm} csomagokat, és megírtam a szerver vázát. Az angular alkalmazáshoz egyszerű frontendet készítettem, ebbe fognak majd a komponensek kerülni.
+
+\subsection{Felhasználói felület létrehozása}
+
+\noindent
+\textbf{A commit teljes szövege:} \textit{Angular frontend fejlesztése}
+
+\bigskip
+\noindent
+Ez a commit \href{https://github.com/Gtomika/prf-project/commit/53e7acb28718a72afb40870192a166d8839e0d08}{itt} található.
+\bigskip
+
+Megalkottam a felhasználói felületet az angularban. A főkomponens tartalmazza a menüsort, és a bejelentkezési állapotot, és ezen belül jelennek meg az egyes komponensek. A hozzáadott komponensek:
+
+\begin{itemize}
+	\item Login: bejelentkezés
+	\item Register: regisztráció
+	\item Home: főoldal
+	\item Products: termékek
+	\item About: információ
+\end{itemize}
+
+\section{API pontok}
+
+Itt dokumentálom, hogy milyen API endpointokat lehet használni.
 
 \section{Bemutató}
 

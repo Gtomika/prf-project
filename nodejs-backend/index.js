@@ -3,59 +3,67 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const fileSystem = require('fs');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 
 //Egyéb fájlok importálása
-
-const router = require('./routes');
 const secrets = require('./secrets.json'); //ez nincs verziózva!!!
 const constants = require('./constants.json');
+const mongodb = require('./mongodb');
 const passport = require('./passportSettings');
+const router = require('./routes');
+
+//Megmondja, hogy debug módban vagyunk-e (he nem, akkor null lesz)
+let debug = constants.isDebug;
+if(debug === 'true') {
+    console.log('DEBUG mód');
+} else {
+    console.log('PRODUCTION mód')
+    debug = null;
+}
 
 //Express app létrehozása
-
 const app = express();
 
 //Middleware-ek csatlakoztatása
+app.use(cors());
 
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
-app.use(cors());
 
 app.use(expressSession({secret: secrets.expressSessionSecret, resave: true}));
 app.use(passport.initialize());
 app.use(passport.session());
 
 //Az angular app felcsatlakoztatása (ha létezik). Ha nem létezik, akkor development módban vagyunk.
-const pathString = constants.angularDist + '/' + constants.angularFrontendName;
-const angularPath = path.join(__dirname, pathString);
+const angularPathString = constants.angularDist + '/' + constants.angularFrontendName;
+const angularPath = path.join(__dirname, angularPathString);
 app.use(express.static(angularPath));
 
-app.use(constants.apiRoute, router); //router felrakása API routra
+//router felrakása API routra
+app.use(constants.apiRoute, router);
+
+//csatlakozás mongodb-hez
+let connectionString = null;
+if(debug) {
+    connectionString = constants.mongoConnectionStringDebug;
+} else {
+    connectionString = secrets.mongodbConnectionStringProduction;
+}
+mongodb.connect(connectionString);
 
 //root URL hívásakor fut.
 app.get('/', function (req, res) {
-    //létezik-e az angular dist mappa, ahol a buildelt angular app van?
-    if(fileSystem.existsSync(angularPath)) {
-        /*
-        Megvan az angular dist, vélhetőleg production módban vagyunk. Ilyenkor küldjük 
-        az angular index.html fájlját.
-        */
-        const angularIndexPath = path.join(__dirname, pathString+"/index.html");
-        res.sendFile(angularIndexPath);
-    } else {
-        /*
-        Nem volt elérhető, feltehetőleg development módbn vagyunk, ilyenkor valami 
-        kis random szöveget jelenítek meg. A frontent a localhost:4200 alatt lesz.
-        */
+    if(debug) {
         const date = new Date();
         const millis = date.getMilliseconds();
-        res.send('Hello: ' + millis); 
+        res.send('Hello: ' + millis);
+    } else {
+        //production módban a root URL az angular alkalmazást adja
+        const angularIndexPath = path.join(__dirname, angularPathString+"/index.html");
+        res.sendFile(angularIndexPath);
     }
 });
 
