@@ -1,0 +1,7 @@
+name,description,price,imgPath
+Gyalog,A gyalog kizárólag előre léphet. A kiindulási helyéről mind a nyolc gyalog tetszés szerint egy vagy két mezőt léphet előre de a továbbiakban lépésenként mindig csak egy mezőt haladhat előre. Ütni azonban csak jobbra vagy balra átlósan tud szintén csak egy mezőnyi távolságra,1000 Ft,/images/pawn.png
+Huszár,A róla elnevezett lóugrásban lép: vízszintesen jobbra vagy balra két mezőt majd függőlegesen fel vagy le egyet (vagy fordítva: függőlegesen fel vagy le kettőt és vízszintesen jobbra vagy balra egyet),3000 Ft,/images/knight.jpg
+Futó,A futók átlós irányban léphetnek bármennyi mezőt amíg egy másik báb nem kerül útjába. A játékosok a játék elején két-két futóval rendelkeznek melyek közül az egyik csak a sötét a másik csak a világos mezőkön közlekedik.,3000 Ft,/images/bishop.png
+Bástya,Bármennyi mezőt léphet de csak függőleges és vízszintes irányban átlósan nem így egy helyről bárhol is áll a sakktáblán 14 mezőre léphet ha másik figura nincs az útjában.,5000 Ft,/images/rook.jpg
+Vezér,A vezér mozgása olyan mintha egyesítettünk volna egy futót egy bástyával azaz egyenesen vagy átlósan bármely irányban bármennyi mezőt léphet mindaddig amíg a tábla széléhez nem ér vagy egy másik figura nem kerül az útjába.,9000 Ft,/images/queen.png
+Király,A király a játék legfontosabb bábja hiszen az egész játék a bemattolására irányul. Bármely irányban (vízszintesen függőlegesen átlósan) léphet de csak egy mezőt vagyis csak a közvetlen szomszédos mezőre kivéve ha sáncol.,10000 Ft,/images/king.png

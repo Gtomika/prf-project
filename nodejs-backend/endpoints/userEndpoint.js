@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const passport = require('passport');
 
 const userModel = mongoose.model('user');
 
@@ -11,10 +12,10 @@ const attachEndpoints = function(router) {
             userModel.findOne({username: req.body.username}, (error, user) => {
                 if(error) {
                     console.log(error);
-                    return res.status(500).send('Adatbázishiba regisztáció során!');
+                    return res.status(500).send({message:'Adatbázishiba regisztáció során!'});
                 }
                 if(user) {
-                    return res.status(400).send('Ez a felhasználó már létezik!');
+                    return res.status(400).send({message:'Ez a felhasználó már létezik!'});
                 } else {
                     const newUser = new userModel(
                     {
@@ -26,67 +27,88 @@ const attachEndpoints = function(router) {
                     newUser.save((error) => {
                         if(error) {
                             console.log(error);
-                            return res.status(500).send('Adatbázishiba regisztáció során!');
+                            return res.status(500).send({message:'Adatbázishiba regisztáció során!'});
                         }
-                        return res.status(200).send('Sikeres regisztráció!');
+                        return res.status(200).send({message:'Sikeres regisztráció!'});
                     })
                 }
             }) 
         } else {
-            return res.status(400).send('Hiányos adatok: a regisztrációhoz felhasználónév és jelszó kell!');
+            return res.status(400).send({message:'Hiányos adatok: a regisztrációhoz felhasználónév és jelszó kell!'});
         }
     });
 
     //PUT user-re: felhasználó jelszavának frissítése (csak bejelentkezett felhasználó végezheti)
     router.route('/user').put((req, res, next) => {
         if(!req.isAuthenticated()) {
-            return res.status(403).send('Ehhez be kell jelentkezni!')
+            return res.status(401).send({message:'Ehhez be kell jelentkezni!'})
         }
-        if(req.body.username && req.body.password) {
-            //van felhasználónév
+        if(req.body.username && req.body.password && req.body.newPassword) {
+            //vannak adatok
             userModel.findOne({username: req.body.username}, (error, user) => {
                 if(error) {
                     console.log(error);
-                    return res.status(500).send('Adatbázishiba jelszóváltás során!');
+                    return res.status(500).send({message:'Adatbázishiba jelszóváltás során!'});
                 }
                 if(user) {
-                    //módosítások mentése, jelszó hashelő meg fog hívódni
-                    user.password = req.body.password;
-                    user.save((error) => {
+                    //van ilyen felhasználó, ellenőrizzük a jelszvát
+                    passport.authenticate('local', function(error, user) {
+                        //visszakaptuk az authentikáció eredményét
                         if(error) {
-                            return res.status(500).send('Adatbázishiba jelszóváltás során!');
+                            //az error itt lehet adatbázis agy authentikációs hiba is
+                            console.log(error);
+                            return res.status(401).send({message:error});
                         }
-                        return res.status(200).send('A jelszó sikeresen megváltozott!');
-                    });
+                        //a kapott jelszó helyes, ez tényleg ő
+                        user.password = req.body.newPassword;
+                        user.save((error) => {
+                            if(error) {
+                                return res.status(500).send({message:'Adatbázishiba jelszóváltás során!'});
+                            }
+                            console.log('Jelszo megvaltozott!');
+                            return res.status(200).send({message:'A jelszó sikeresen megváltozott!'});
+                        });
+                    })(req, res);
                 } else {
-                    return res.status(400).send('Ez a felhasználó nem létezik!');
+                    return res.status(400).send({message:'Ez a felhasználó nem létezik!'});
                 }
             }) 
         } else {
-            return res.status(400).send('Hiányos adatok: a jelszóváltáshoz felhasználónév és új jelszó kell!');
+            return res.status(400).send({message:'Hiányos adatok: a jelszóváltáshoz felhasználónév, jelszó és új jelszó kell!'});
         }
     });
 
     //DELETE user-re: felhasználó törlése (csak bejelentkezett felhasználó végezheti)
     router.route('/user').delete((req, res, next) => {
         if(!req.isAuthenticated()) {
-            return res.status(403).send('Ehhez be kell jelentkezni!')
+            return res.status(401).send('Ehhez be kell jelentkezni!')
         }
-        if(req.body.username) {
+        if(req.body.username && req.body.password) {
             userModel.findOne({username: req.body.username}, (error, user) => {
                 if(error) {
                     console.log(error);
-                    return res.status(500).send('Adatbázishiba törlés során!');
+                    return res.status(500).send({message:'Adatbázishiba törlés során!'});
                 }
-                user.delete((delError) => {
-                    if(delError) {
-                        return res.status(500).send('Adatbázishiba törlés során!');
+                //van ilyen felhasználó
+                passport.authenticate('local', function(error, user) {
+                    //visszakaptuk az authentikáció eredményét
+                    if(error) {
+                        //az error itt lehet adatbázis agy authentikációs hiba is
+                        console.log(error);
+                        return res.status(401).send({message:error});
                     }
-                    return res.status(200).send('Felhasználó törölve!');
-                })
+                    //a kapott jelszó helyes, ez tényleg ő
+                    user.delete((delError) => {
+                        if(delError) {
+                            return res.status(500).send({message:'Adatbázishiba törlés során!'});
+                        }
+                        return res.status(200).send({message:'Felhasználó törölve!'});
+                    });
+                })(req, res);
+               
             });
         } else {
-            return res.status(400).send('Hiányos adatok: a törléshez felhasználónév kell!')
+            return res.status(400).send({message:'Hiányos adatok: a törléshez felhasználónév és jelszó kell!'})
         }
     });
 }

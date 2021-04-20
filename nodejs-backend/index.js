@@ -27,7 +27,22 @@ if(debug === 'true') {
 const app = express();
 
 //Middleware-ek csatlakoztatása
-app.use(cors());
+if(debug) {
+    const originsWhitelist = [
+        'http://localhost:4200',
+        'http://127.0.0.1:4200'
+    ];
+    const corsOptions = {
+        origin: function(origin, callback){
+              var isWhitelisted = originsWhitelist.indexOf(origin) !== -1;
+              callback(null, isWhitelisted);
+        },
+        credentials:true
+      }
+    app.use(cors(corsOptions));
+} else {
+    app.use(cors());
+}
 
 app.use(cookieParser());
 app.use(bodyParser.json());

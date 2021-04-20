@@ -1,4 +1,4 @@
-#prodRoot {
+#userRoot {
     background-image: url("/assets/chess_background.jpg");
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -6,18 +6,20 @@
     height: 100%;
 }
 
-#prodTable {
-    display: none;
-    width: 100%;
-    columns: 2;
-}
-
-#prodProgress {
+#userBox {
+    background-color: darkgray;
+    padding: 20px;
     position: absolute;
-    display: block;
-    width: 30%;
-    height: 20px;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    border: 1px solid darkgray;
+    border-radius: 9px;
+}
+
+.userFormTitle {
+    font-size: large;
+    color: black;
+    margin-bottom: 20px;
+    display: block;
 }

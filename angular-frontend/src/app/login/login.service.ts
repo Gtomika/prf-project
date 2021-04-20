@@ -19,8 +19,9 @@ export class LoginService {
       password: pPassword
     },
     {
-      responseType: 'text'
+      withCredentials: true
     });
+    //válasz json lesz
   }
 
   logout() {

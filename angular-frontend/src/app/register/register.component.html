@@ -1,17 +1,30 @@
 <div id="registerRoot">
     <div id="registerBox">
-        <b style="margin: 20px; font-size: large;">Regisztráció</b>
-        <div style="margin: 20px;">
-            <span>Felhasználónév:  </span>
-            <input type="text" placeholder="felhasználónév..." [(ngModel)]="username">
-        </div>
-        <div style="margin: 20px;">
-            <span>Jelszó:  </span>
-            <input type="password" placeholder="jelszó..." [(ngModel)]="password">
-        </div>
+        <b style="font-size: large; color: black;">Regisztráció</b>
+        <mat-form-field style="display: block; margin-top: 20px;">
+            <mat-label>Felhasználónév</mat-label>
+            <mat-hint>Legalább 3 karakteres</mat-hint>
+            <mat-error *ngIf = "notEmptyUsernameControl.hasError('required')">
+                Meg kell adnod a felhasználónevet!
+             </mat-error>
+            <input matInput type="text" [(ngModel)]="username" [formControl]="notEmptyUsernameControl">
+        </mat-form-field>
+        <mat-form-field style="display: block; margin-top: 20px;">
+            <mat-label>Jelszó</mat-label>
+            <mat-hint>Legalább 3 karakteres</mat-hint>
+            <mat-error *ngIf = "notEmptyPasswordControl.hasError('required')">
+                Meg kell adnod a jelszót!
+             </mat-error>
+            <input matInput type="password" [(ngModel)]="password" [formControl]="notEmptyPasswordControl">
+        </mat-form-field>
+        <mat-form-field style="display: block; margin-top: 20px;">
+            <mat-label>Jelszó ismét</mat-label>
+            <mat-hint>Meg kell egyeznie a két jelszónak</mat-hint>
+            <input matInput type="password" [(ngModel)]="passwordAgain">
+        </mat-form-field>
         <div>
-            <button (click)="onRegisterClick()" style="margin: 20px; float: left;">Regisztáció</button>
-            <u style="margin: 20px; float: right;" (click)="onLoginClick()">Már van fiókom</u>
+            <button mat-raised-button (click)="onRegisterClick()" style="margin: 20px; float: left;">Regisztáció</button>
+            <u style="margin: 20px; float: right; color: black;" (click)="onLoginClick()">Már van fiókom</u>
         </div>
     </div>
 </div>

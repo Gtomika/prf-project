@@ -22,6 +22,15 @@
     right: 90px;
 }
 
+#adminStatus {
+    position: absolute;
+    color: red;
+    cursor: pointer;
+    display: inline-block;
+    top: 50px;
+    right: 90px;
+}
+
 #navbar {
     height:30px;
     background-color:#000;

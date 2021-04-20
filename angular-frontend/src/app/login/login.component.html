@@ -1,17 +1,23 @@
 <div id="loginRoot">
     <div id="loginBox">
-        <b style="margin: 20px; font-size: large;">Kérlek jelentkezz be</b>
-        <div style="margin: 20px;">
-            <span>Felhasználónév:  </span>
-            <input type="text" placeholder="felhasználónév..." [(ngModel)]="username">
-        </div>
-        <div style="margin: 20px;">
-            <span>Jelszó:  </span>
-            <input type="password" placeholder="jelszó..." [(ngModel)]="password">
-        </div>
+        <b style="font-size: large; color: black;">Kérlek jelentkezz be</b>
+        <mat-form-field style="display: block; margin-top: 20px;">
+            <mat-label>Felhasználónév</mat-label>
+            <mat-error *ngIf = "notEmptyUsernameControl.hasError('required')">
+                Meg kell adnod a felhasználónevet!
+             </mat-error>
+            <input matInput type="text" placeholder="felhasználónév..." [(ngModel)]="username" [formControl]="notEmptyUsernameControl">
+        </mat-form-field>
+        <mat-form-field style="display: block;">
+            <mat-label>Jelszó</mat-label>
+            <mat-error *ngIf = "notEmptyPasswordControl.hasError('required')">
+                Meg kell adnod a jelszót!
+             </mat-error>
+            <input matInput type="password" placeholder="jelszó..." [(ngModel)]="password" [formControl]="notEmptyPasswordControl">
+        </mat-form-field>
         <div>
-            <button (click)="onLoginClick()" style="margin: 20px; float: left;">Bejelentkezés</button>
-            <u style="margin: 20px; float: right;" (click)="onRegisterClick()">Regisztráció</u>
+            <button mat-raised-button (click)="onLoginClick()" style="margin: 20px; float: left; color: black">Bejelentkezés</button>
+            <u style="margin: 20px; float: right; color: black;" (click)="onRegisterClick()">Regisztráció</u>
         </div>
     </div>
 </div>

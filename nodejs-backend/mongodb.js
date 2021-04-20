@@ -14,7 +14,7 @@ mongoose.connection.on('error', () => {
 //It vannak definiálva a sémák
 
 //Felhasználó séma definiálása
-var userSchema = new mongoose.Schema({
+const userModel = new mongoose.Schema({
     username: {type: String, unique: true, required: true},
     password: {type: String, required: true},
     isAdmin: {type: Boolean, required: true}
@@ -22,7 +22,7 @@ var userSchema = new mongoose.Schema({
 {collection: 'users'});
 
 //Trigger: fusson le a mentés művelet előtt: jelszó hashelés!
-userSchema.pre('save', function(next) {
+userModel.pre('save', function(next) {
     const user = this;
     if(user.isModified('password')) {
         //ha a jelszó megváltozott
@@ -48,14 +48,26 @@ userSchema.pre('save', function(next) {
 
 //kell egy metódus, ami meg tudja nézni, hogy a szöveges jelszó
 //megegyezik-e a hash-el
-userSchema.methods.comparePasswords = function(password, nx) {
+userModel.methods.comparePasswords = function(password, nx) {
     //bcrypt el tudja végezni a hashalést
     bcrypt.compare(password, this.password, function(error, isMatch) {
         nx(error, isMatch);
     });
 };
 
-mongoose.model('user', userSchema);
+mongoose.model('user', userModel);
+
+//PRODUCT séma: termékekhez
+
+const productModel = new mongoose.Schema({
+    name: {type: String, required: true, unique: true},
+    description: {type: String, required: true},
+    price: {type: String, required: true},
+    imgPath: {type: String, required: true}
+},
+{collection: 'products'});
+
+mongoose.model('product', productModel);
 
 //Objektum exportálás, a kapcsolódás az index.js-ben történik
 

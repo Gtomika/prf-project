@@ -1,20 +1,22 @@
-<div id="header" #root>
+<div id="header">
   <h3>PRF sakk áruház</h3>
   <div id="navbar">
     <ul>
         <li (click)="onHomeClicked()">Főoldal</li>
         <li (click)="onProductsClicked()">Termékek</li>
         <li (click)="onAboutClicked()">Rólunk</li>
+        <li (click)="onUserClicked()">Adatok módosítása</li>
         <li (click)="onLoginLogoutClicked()" id="loginLogoutButton">{{loginLogoutButtonText}}</li>
     </ul>
   </div>
   <img src="assets/chess_icon.png" id="siteIcon" (click)="onHomeClicked()">
   <span id="loginLogoutStatus">{{loginLogoutStatusText}}</span>
+  <span id="adminStatus" *ngIf="adminLoggedIn" (click)="onAdminStatusClicked()">ADMIN FELÜLET</span>
 </div>
 
 <hr>
 
-<div id="routerContent">
+<div id="routerContent" NgxLoadingXBlur [show]="loading">
   <router-outlet></router-outlet>
 </div>
 
@@ -29,3 +31,4 @@
     <a style="align-self: flex-end;" href="https://github.com/Gtomika/prf-project">GitHub</a>
   </div>
 </div>
+<ngx-loading-x [show]="loading"></ngx-loading-x>

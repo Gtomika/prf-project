@@ -1,6 +1,7 @@
 \documentclass[]{article}
 
 \usepackage{hyperref}
+\usepackage{listings}
 
 %opening
 \title{Programrendszerek fejlesztés projektmunka}
@@ -58,12 +59,98 @@ Megalkottam a felhasználói felületet az angularban. A főkomponens tartalmazz
 	\item About: információ
 \end{itemize}
 
+\subsection{Authentikáció}
+
+\noindent
+\textbf{A commit teljes szövege:} \textit{Felhasználókezelés megvalósítása}
+
+\bigskip
+\noindent
+Ez a commit \href{https://github.com/Gtomika/prf-project/commit/ac23392a3ebe9a36ad80a358ebb768bba0434b408}{itt} található.
+\bigskip
+
+Kliens és szerveroldalon is implementáltam a felhasználókezelést. Ez szerver oldalon azt jelenti, hogy létrehoztam a login, logout és user endpointokat, és az felhasználó adatbázis sémáját. Angular esetén funkcionalitás került a login és register komponensek mögé, és bekerült egy guard, ami ellenőrzi a bejelentkezést.
+
+Még itt elég sok a hiba, a későbbiekben ezen jelentősen javítok. Pl: bejelentkezés ellenőrzése service-el, nem pedig a local storage-al, vagy a loading indicator mutatása amíg a bejelentkezés tart.
+
 \section{API pontok}
 
-Itt dokumentálom, hogy milyen API endpointokat lehet használni.
+Itt dokumentálom, hogy milyen API endpointokat lehet használni. Mindegyik endpoint a \textit{/api} mögött van. Ha az URL-ben nincs \textit{/api}, azt az angular fogja lekezelni, nem pedig a szerver.
+
+Például:
+
+\bigskip
+\begin{center}
+	\textit{http://localhost:3080/api/status}
+\end{center}
+
+\subsection{/status}
+
+Ez csak GET-re válaszol, és egyszerűen visszaküld egy kis szöveget. Arra használható, hogy megnézzük hogy működik-e a szerver. Az endpointok a nodeJS mappa endpoints almappájában vannak definiálva, kivéve a \textit{/status}, mert az annyira egyszerű.
+
+\subsection{/login}
+
+Ide csak POST-olni lehet, és meg kell adni a felhasználónevet és jelszót. Ha ezek jók, akkor a bejelentkeztetés megtörténik.
+
+\noindent
+Az adatokat JSON-ban várja:
+
+\bigskip
+\begin{lstlisting}
+{
+ "username": "valaki",
+ "password": "valaki_jelszava"
+}
+\end{lstlisting}
+
+\noindent
+A választ JSONben küldi:
+
+\bigskip
+\begin{lstlisting}
+{
+ "message": "Pl Sikeres bejelentkezes",
+ "isAdmin": "false"
+}
+\end{lstlisting}
+
+\noindent
+Az angular nézi az \textit{isAdmin} értékét, hogy tudja, hogy admin jelentkezett-e be.
+
+\subsection{/logout}
+
+A \textit{/login} párja, ami kijelentkezteti a felhasználót. Csak POST-ot fogad, nem vár semmilyen adatot és akkor sem dob hibát, ha nem volt senki bejelentkezve.
+
+\subsection{/user}
+
+Felhasználókezelő endpoint, ami POST-ot, PUT-ot és DELETE-et támogat.
+
+POST esetén regisztáció történik. JSON-ban meg kell adni a felhasználónevet és jelszót (úgy, mint a \textit{/login} esetén).
+
+PUT esetén a jelszó frissíthető, itt meg kell adni a felhasználónevet és \textbf{jelenlegi} jelszót, majd az új jelszót:
+
+\bigskip
+\begin{lstlisting}
+{
+ "username": "valaki",
+ "password": "valaki_jelszava",
+ "newPassword": "valaki_uj_jelszava"
+}
+\end{lstlisting}
+
+Csak akkor lesz változtatás, ha a felhasználó be van jelentkezve, és a jelenlegi jelszava egyezik.
+
+DELETE-tel felhasználó törlés kell. PUT-hoz hasonlóan itt is küldeni kell a felhasználónevet és a jelszót, csak akkor fog végrehajtódni, ha be vagyunk jelentkezve és a jelszó helyes.
 
 \section{Bemutató}
 
-Itt leírom, hogy hogyan kell használni az alkalmazást.
+Ahogy a követelményekben megvan, lehetőség van a belépni a következő felhasználóval:
+
+\begin{itemize}
+	\item Username: szaboz
+	\item Jelszó: PRF2021
+\end{itemize}
+
+Ez a felhasználó egyben admin is. Lehet regisztrálni persze más felhasználót is, az nem lesz admin.
 
 \end{document}

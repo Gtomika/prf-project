@@ -2,6 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
+/*
+Kicsit téves az elnevezés, ez nem csak regisztál, hanem kezeli is a felhasználót,
+POST, PUT, DELETE a /user-re.
+*/
+
 @Injectable({
   providedIn: 'root'
 })
@@ -21,7 +26,32 @@ export class RegisterService {
       password: pPassword
     },
     {
-      responseType: 'text'
+      withCredentials: true
     });
   }
+
+  updateUserPassword(pUsername: String, pPassword: String, pNewPassword: String) {
+    return this.http.put(this.userEndpoint.toString(), 
+    {
+      username: pUsername,
+      password: pPassword,
+      newPassword: pNewPassword
+    },
+    {
+      withCredentials: true
+    });
+  }
+
+  deleteUser(pUsername: String, pPassword: String) {
+    return this.http.request('delete', this.userEndpoint.toString(), 
+    {
+      withCredentials: true, 
+      body: {
+        username: pUsername,
+        password: pPassword
+      }
+    }
+    );
+  }
+
 }

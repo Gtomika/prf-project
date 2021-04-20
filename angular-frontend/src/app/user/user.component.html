@@ -1,0 +1,27 @@
+<div id="userRoot">
+    <div id="userBox">
+        <b class="userFormTitle">Itt módosítatod az adataidat, {{username}}</b>
+        <b class="userFormTitle">Jelszó módosítása</b>
+        <mat-form-field style="display: block;">
+            <mat-label>Régi jelszó</mat-label>
+            <input matInput type="password" placeholder="jelszó..." [(ngModel)]="password">
+        </mat-form-field>
+        <mat-form-field style="display: block;">
+            <mat-label>Új jelszó</mat-label>
+            <mat-hint>Legalább 3 karakter kell!</mat-hint>
+            <input matInput type="password" placeholder="jelszó..." [(ngModel)]="newPassword1">
+        </mat-form-field>
+        <mat-form-field style="display: block; margin-bottom: 20px;">
+            <mat-label>Új jelszó ismét</mat-label>
+            <mat-hint>Meg kell egyzniük.</mat-hint>
+            <input matInput type="password" placeholder="jelszó..." [(ngModel)]="newPassword2">
+        </mat-form-field>
+        <button mat-raised-button (click)="onUpdatePasswordClicked()">Jelszó cseréje</button>
+        <b class="userFormTitle" style="padding-top: 20px;">Felhasználó törlése</b>
+        <mat-form-field style="display: block;">
+            <mat-label>Jelszó</mat-label>
+            <input matInput placeholder="Jelszó..." [(ngModel)]="deletePassword">
+        </mat-form-field>
+        <button mat-raised-button (click)="onDeleteUser()">Törlés</button>
+    </div>
+</div>
