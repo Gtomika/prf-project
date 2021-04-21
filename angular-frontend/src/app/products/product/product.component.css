@@ -1,0 +1,36 @@
+.productRoot {
+    display: block;
+    background-color: darkgray;
+    border: 1px solid black;
+    border-radius: 9px;
+    overflow: hidden;
+}
+
+.productImage {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 9px;
+    border: 1px solid black;
+    margin: 20px;
+}
+
+.productName {
+    font-size: large;
+    display: block;
+    margin-bottom: 20px;
+    color: black;
+}
+
+.productDescription {
+    display: block;
+    font-size: medium;
+    color: black;
+}
+
+.productPrice {
+    color: black;
+    background-color: blanchedalmond;
+    border-radius: 9px;
+    padding: 10px;
+    border: 1px solid black;
+}

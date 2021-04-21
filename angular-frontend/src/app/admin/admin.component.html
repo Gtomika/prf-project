@@ -1,3 +1,23 @@
 <div id="adminRoot">
     <h2>Admin kezelőfelület</h2>
+    <div id="adminBox">
+        <b class="adminTitle">Termék hozzáadása vagy frissítése</b>  
+        <label for="productJsonSelector" style="display: block;">Válaszd ki a terméket leíró json fájlt!</label>
+        <input type="file" id="productJsonSelector" accept=".json" (change)="fileChanged($event)">
+        <button mat-raised-button (click)="onHelpClicked()" style="margin-top: 20px; margin-bottom: 20px;">
+            <mat-icon>help_outline</mat-icon>
+            JSON fájl tartalma?
+        </button>
+        <span style="color: black; display: block;">Ha már van ilyen nevű termék, akkor kapcsolj át a frissítésre.</span>
+        <mat-slide-toggle [(ngModel)]="isUpdate" style="display: block; color: black; margin-top: 20px; margin-bottom: 20px;">
+            {{ isUpdate ? 'Frissítés (PUT)' : 'Létrehozás (POST)' }}
+        </mat-slide-toggle>
+        <button mat-raised-button (click)="onCreateUpdateClicked()">{{ 'Termék ' + (isUpdate ? 'frissítése' : 'létrehozása') }}</button>
+        <b class="adminTitle" style="margin-top: 20px;">Termék törlése</b>
+        <mat-form-field style="display: block;">
+            <mat-label>Add meg a termék nevét</mat-label>
+            <input matInput type="text" [(ngModel)]="productDeleteName">
+        </mat-form-field>
+        <button mat-raised-button (click)="onDeleteClicked()">Törlés</button>
+    </div>
 </div>

@@ -73,6 +73,34 @@ Kliens és szerveroldalon is implementáltam a felhasználókezelést. Ez szerve
 
 Még itt elég sok a hiba, a későbbiekben ezen jelentősen javítok. Pl: bejelentkezés ellenőrzése service-el, nem pedig a local storage-al, vagy a loading indicator mutatása amíg a bejelentkezés tart.
 
+\subsection{Felhasználókezelés}
+
+\noindent
+\textbf{A commit teljes szövege:} \textit{ Backend: felhasználói adatok frissítése user endpointon. UI: sweetalert, material, felhasználói felületadatmódosításra}
+
+\bigskip
+\noindent
+Ez a commit \href{https://github.com/Gtomika/prf-project/commit/6794668ee38e4793fa249915b7df71481f39e519}{itt} található.
+\bigskip
+
+Szerver oldalon bővítettem a \textit{/user} endpointot, hogy lehessen felhasználói jelszót változtatni, és felhasználót törölni. Kliens oldalon ehhez egy felületet hoztam létre, ahol a bejelentkezett felhasználó módosíthatja a jelszavát vagy törölheti magát.
+
+Szépítettem az oldal kinézetét, a Google material komponensek használatával, és az alap JavaScript alert dialógus helyett egy alert könyvtárra tértem át.
+
+\subsection{Termékkezelés admin felületről}
+
+\noindent
+\textbf{A commit teljes szövege:} \textit{ Backend: product endpoint, Frontend: admin felület}
+
+\bigskip
+\noindent
+Ez a commit ... található.
+\bigskip
+
+Szerver oldalon létrehoztam a \textit{/product} endpointot, a termékek módosítására és lekérésére. Ehhez egy admin felületet is létrehoztam. Ezt a felületet csak bejelentkezett admin érheti el. 
+
+Itt lehetőség van új termék létrehozására, meglévő frissítésére, és törlésére. Létrehozás és frissítés úgy történik, hogy fel lehet tölteni egy JSON fájlt, ami a termék adatait tartalmazza. Egy ilyen példa fájlt beraktam a \textit{docs} mappába is, \textit{imaginaryPiece.json} néven.
+
 \section{API pontok}
 
 Itt dokumentálom, hogy milyen API endpointokat lehet használni. Mindegyik endpoint a \textit{/api} mögött van. Ha az URL-ben nincs \textit{/api}, azt az angular fogja lekezelni, nem pedig a szerver.
@@ -141,6 +169,44 @@ PUT esetén a jelszó frissíthető, itt meg kell adni a felhasználónevet és 
 Csak akkor lesz változtatás, ha a felhasználó be van jelentkezve, és a jelenlegi jelszava egyezik.
 
 DELETE-tel felhasználó törlés kell. PUT-hoz hasonlóan itt is küldeni kell a felhasználónevet és a jelszót, csak akkor fog végrehajtódni, ha be vagyunk jelentkezve és a jelszó helyes.
+
+\subsection{/product}
+
+Ezen az endpointon kérhetőek le, vagy módosíthatóak a termékek. Mindegyik híváshoz be kell, hogy jelentkezzünk. Azokat hívásokat, amik a termékek adatbázisát megváltoztatják, csak admin hajthatja végre.
+
+\noindent
+\textbf{GET}: Ez lekéri az összes terméket, amiket egy JSON fájlban küld vissza.
+
+\noindent
+\textbf{POST (admin)}: Új termék hozható létre vele. Várja a hitelesítő adatokat, és a termék adatait, a következő formában:
+
+\bigskip
+\begin{lstlisting}
+{
+ "username": "valaki_admin",
+ "password": "valaki_jelszava",
+ "name": "termek neve",
+ "description": "termek leirasa",
+ "price": "termek ara",
+ "imgPath": "utvonal a termek kepere"
+}
+\end{lstlisting}
+
+\bigskip
+\noindent
+\textbf{PUT (admin)}: POST-hoz hasonló, de itt a terméknek már léteznie kell, és az adatai frissítve lesznek. Pont ugyanolyan formában várja az inputot, mint a POST.
+
+\noindent
+\textbf{DELETE (admin)}: Termék törlése. Az inputot a következő formában várja:
+
+\bigskip
+\begin{lstlisting}
+{
+ "username": "valaki_admin",
+ "password": "valaki_jelszava",
+ "name": "torlendo termek neve",
+}
+\end{lstlisting}
 
 \section{Bemutató}
 

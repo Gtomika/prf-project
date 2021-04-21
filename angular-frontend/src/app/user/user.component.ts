@@ -47,8 +47,7 @@ export class UserComponent implements OnInit {
         return null;
       }
       //valamiért nincs a local storage-ban
-      Swal.fire(
-        {
+      Swal.fire({
           title: 'Felhasználónév',
           text: 'Valamiért nem találom a felhasználónevedet. Kérlek add meg!',
           icon: 'question',

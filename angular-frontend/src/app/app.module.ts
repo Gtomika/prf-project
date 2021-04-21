@@ -17,7 +17,10 @@ import { AdminComponent } from './admin/admin.component';
 import { UserComponent } from './user/user.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input'; 
-import {BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import {BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ProductComponent } from './products/product/product.component';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle'; 
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -30,7 +33,8 @@ import {BrowserAnimationsModule } from '@angular/platform-browser/animations'
     AboutComponent,
     RegisterComponent,
     AdminComponent,
-    UserComponent
+    UserComponent,
+    ProductComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +46,9 @@ import {BrowserAnimationsModule } from '@angular/platform-browser/animations'
     NgxLoadingXModule,
     MatButtonModule,
     MatInputModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatSlideToggleModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]
