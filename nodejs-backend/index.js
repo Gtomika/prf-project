@@ -84,7 +84,6 @@ app.get('/', function (req, res) {
 
 //akkor fut, ha semmilyen más funkció nem tudta lekezelni a kérést
 app.use((req, res, next) => {
-    console.log('Hiba');
     res.status(404);
     res.send('Nem találtam ezt az erőforrást!');
 });

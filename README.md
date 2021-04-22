@@ -20,17 +20,18 @@ Ez a javaee-backend mappában található.
  - Angular app indítása: *ng serve* (**localhost:4200**)
  - NodeJS szerver indítása: *npm start* (**localhost:3080**)
 
-Az angularos **proxy.conf.json** fájlbna van megadva, hogy 
-minden API hívást továbbítania kell a NodeJS szervernek.
+A nodejs mapájában lévő **constants.json** fájlban a *isDebug* attribútumot 
+át kell állítani *true*-ra (de ez így van alapértelmezetten).
 
 ## Production build
 
  - Angular app buildelése: *ng build --prod* (*dist* mappa létrejön)
- - A *dist* mappát át kell másolni a NodeJS szerver mappájába.
+ - A *dist* mappát át kell másolni a NodeJS szerver gyökér mappájába.
  
-Ha a NodeJS szerver látja, hogy létezik a *dist* mappa, akkor a root URL-en 
-az Angular alkalmazást fogja visszaadni.
- 
+A nodejs mapájában lévő **constants.json** fájlban a *isDebug* attribútumot 
+át kell állítani *false*-ra. 
+
+ - Az így elkészült NodeJS mappába be kell rakni a **secrets.json** fájlt, ami tartalmazza a herokus URL-t és a MongoDB adatokat (ez a fájl nincs verziózva).
 
 ## Dokumentáció
 

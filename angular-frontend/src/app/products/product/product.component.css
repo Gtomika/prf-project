@@ -4,19 +4,21 @@
     border: 1px solid black;
     border-radius: 9px;
     overflow: hidden;
+    margin: 20px;
+    padding: 20px;
 }
 
 .productImage {
     max-width: 200px;
     max-height: 200px;
     border-radius: 9px;
+    display: inline-block;
     border: 1px solid black;
     margin: 20px;
 }
 
 .productName {
     font-size: large;
-    display: block;
     margin-bottom: 20px;
     color: black;
 }
@@ -25,6 +27,7 @@
     display: block;
     font-size: medium;
     color: black;
+    margin: 20px;
 }
 
 .productPrice {
@@ -33,4 +36,5 @@
     border-radius: 9px;
     padding: 10px;
     border: 1px solid black;
+    margin: 20px;
 }

@@ -12,6 +12,9 @@ userEndpoint(router);
 const productEndpoints = require('./endpoints/productEndpoint');
 productEndpoints(router);
 
+const imageEndpoints = require('./endpoints/imageEndpoint');
+imageEndpoints(router);
+
 //egyszerű státusz endpoint
 router.route('/status').get((req, res, next) => {
     return res.status(200).send('PRF Projekt NodeJS szerver');

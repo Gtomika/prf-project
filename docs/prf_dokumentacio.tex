@@ -94,12 +94,24 @@ Szépítettem az oldal kinézetét, a Google material komponensek használatáva
 
 \bigskip
 \noindent
-Ez a commit ... található.
+Ez a commit \href{https://github.com/Gtomika/prf-project/commit/f592c43be14ac39f53c4aa99b7b46c60c5b0640c}{itt} található.
 \bigskip
 
 Szerver oldalon létrehoztam a \textit{/product} endpointot, a termékek módosítására és lekérésére. Ehhez egy admin felületet is létrehoztam. Ezt a felületet csak bejelentkezett admin érheti el. 
 
 Itt lehetőség van új termék létrehozására, meglévő frissítésére, és törlésére. Létrehozás és frissítés úgy történik, hogy fel lehet tölteni egy JSON fájlt, ami a termék adatait tartalmazza. Egy ilyen példa fájlt beraktam a \textit{docs} mappába is, \textit{imaginaryPiece.json} néven.
+
+\subsection{Termék komponens, images endpoint}
+
+\noindent
+\textbf{A commit teljes szövege:} \textit{ Backend: images endpoint, Frontend: termék komponens}
+
+\bigskip
+\noindent
+Ez a commit ... található.
+\bigskip
+
+A szerverhez hozzáadtam a \textit{/images} endpointot, amitől el lehet kérni az egyes termékekhez tartozó képeket. Angularban megcsináltam az egy terméket mutató komponenst. Ez a komponens elkéri a szervertől a termék képét, majd megjeleníti.
 
 \section{API pontok}
 
@@ -207,6 +219,20 @@ Ezen az endpointon kérhetőek le, vagy módosíthatóak a termékek. Mindegyik 
  "name": "torlendo termek neve",
 }
 \end{lstlisting}
+
+\subsection{/images}
+
+Ez csak \textit{GET}-et fogad, és lehetőség van vele lekérni a termékekhez tartozó képeket. Az \textit{URL}-ben egy \textit{imageName} nevő paramétert kell megadni, ami megmondja a szervernek, hogy melyik képet kell visszaküldeni. Az angular ezt a termék \textit{imgPath} attribútumából állítja elő. 
+
+Például így lehet a 'Gyalog' nevű termék képét elkérni (debug módban):
+
+\bigskip
+\begin{center}
+	\textit{http://localhost:3080/api/images?imageName=pawn.png}
+\end{center}
+\bigskip
+
+Csak bejelentkezett klienstől fogad kéréseket. A válasz maga a kép lesz (\textit{Content-Type: image/jpeg}). 
 
 \section{Bemutató}
 

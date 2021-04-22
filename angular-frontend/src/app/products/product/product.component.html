@@ -1,13 +1,12 @@
 <div class="productRoot">
-    <div style="float: left;">
-        <img class="productImage">
-    </div>
-    <div style="float: left;">
+    <div>
+        <img class="productImage" style="float: left;" *ngIf="imageLoaded" [src]="imageToShow">
         <b class="productName">{{ name }}</b>
         <span class="productDescription">{{ description }}</span>
         <div>
-            <button mat-raised-button style="float: left;" (click)="onBuyClicked()">Vásárlás</button>
+            <button mat-raised-button style="float: left; margin: 20px;" (click)="onBuyClicked()">Vásárlás</button>
             <span style="float: right;" class="productPrice">{{ price }}</span>
-        </div>        
+        </div>
     </div>
+    <br style="clear: both;">
 </div>
