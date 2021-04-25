@@ -1,23 +1,55 @@
 <div id="adminRoot">
-    <h2>Admin kezelőfelület</h2>
-    <div id="adminBox">
-        <b class="adminTitle">Termék hozzáadása vagy frissítése</b>  
-        <label for="productJsonSelector" style="display: block;">Válaszd ki a terméket leíró json fájlt!</label>
-        <input type="file" id="productJsonSelector" accept=".json" (change)="fileChanged($event)">
-        <button mat-raised-button (click)="onHelpClicked()" style="margin-top: 20px; margin-bottom: 20px;">
-            <mat-icon>help_outline</mat-icon>
-            JSON fájl tartalma?
-        </button>
-        <span style="color: black; display: block;">Ha már van ilyen nevű termék, akkor kapcsolj át a frissítésre.</span>
-        <mat-slide-toggle [(ngModel)]="isUpdate" style="display: block; color: black; margin-top: 20px; margin-bottom: 20px;">
-            {{ isUpdate ? 'Frissítés (PUT)' : 'Létrehozás (POST)' }}
-        </mat-slide-toggle>
-        <button mat-raised-button (click)="onCreateUpdateClicked()">{{ 'Termék ' + (isUpdate ? 'frissítése' : 'létrehozása') }}</button>
-        <b class="adminTitle" style="margin-top: 20px;">Termék törlése</b>
-        <mat-form-field style="display: block;">
-            <mat-label>Add meg a termék nevét</mat-label>
-            <input matInput type="text" [(ngModel)]="productDeleteName">
-        </mat-form-field>
-        <button mat-raised-button (click)="onDeleteClicked()">Törlés</button>
+   <div>
+    <table style="display: block;">
+        <tr>
+            <td>
+                <div class="adminBox">
+                    <b class="adminTitle">Termék hozzáadása vagy frissítése</b>  
+                    <label for="productJsonSelector" style="display: block;">Válaszd ki a terméket leíró json fájlt!</label>
+                    <input type="file" id="productJsonSelector" accept=".json" (change)="fileChanged($event)">
+                    <button mat-raised-button color="primary" (click)="onHelpClicked()" style="margin-top: 20px; margin-bottom: 20px;">
+                        <mat-icon>help_outline</mat-icon>
+                        JSON fájl tartalma?
+                    </button>
+                    <span style="color: black; display: block;">Ha már van ilyen nevű termék, akkor kapcsolj át a frissítésre.</span>
+                    <mat-slide-toggle [(ngModel)]="isUpdate" style="display: block; color: black; margin-top: 20px; margin-bottom: 20px;">
+                        {{ isUpdate ? 'Frissítés (PUT)' : 'Létrehozás (POST)' }}
+                    </mat-slide-toggle>
+                    <button mat-raised-button color="primary" (click)="onCreateUpdateClicked()">{{ 'Termék ' + (isUpdate ? 'frissítése' : 'létrehozása') }}</button>
+                    <b class="adminTitle" style="margin-top: 20px;">Termék törlése</b>
+                    <mat-form-field style="display: block;">
+                        <mat-label>Add meg a termék nevét</mat-label>
+                        <input matInput type="text" [(ngModel)]="productDeleteName">
+                    </mat-form-field>
+                    <button mat-raised-button color="primary" (click)="onDeleteClicked()">Törlés</button>
+                </div>
+            </td>
+            <td>
+                <div class="adminBox">
+                    <b class="adminTitle">Vásárlási adatok megtekintése</b>
+                    <span style="display: block; color: black;">Itt választhatsz egy terméket és lekérheted a vásárlási adatait.</span>
+                    <b style="display: block; color: black; margin-top: 20px;">Pontos terméknév egyezés kell!</b>
+                    <mat-form-field style="display: block; margin-top: 20px;">
+                        <mat-label>Add meg a termék nevét</mat-label>
+                        <input matInput type="text" [(ngModel)]="productPuchaseName">
+                    </mat-form-field>
+                    <button mat-raised-button color="primary" style="margin-bottom: 20px;" (click)="onPurchaseDataClicked()">Lekérés</button>
+                    <div *ngIf="purchasesQueried">
+                        <span style="display: block; color: black; margin-bottom: 20px;">Ezt a terméket utoljára a következő időpontban vásárolták meg:</span>
+                        <b style="display: block; color: black;">{{ lastPurchased }}</b>
+                        <span style="display: block; color: black; margin-top: 20px;">Eddig {{ numOfPurchases }} alkalommal vásárolták meg, és {{ productTotal }} bevételt termelt. A konkrét vásárlásokért görgess le.</span>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div *ngIf="purchasesQueried" style="display:block">
+        <app-purchase *ngFor="let purchase of purchases"
+        [productName]="purchase.getProductName()"
+        [price]="purchase.getPrice()"
+        [purchaseDateTime]="purchase.getDateTime()"
+        [username]="purchase.getUsername()">
+        </app-purchase> 
     </div>
+   </div>
 </div>

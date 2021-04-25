@@ -1,0 +1,10 @@
+<div id="purchasesRoot">
+    <h2>{{ username }} vásárlási előzményei:</h2>
+    <span>Összesen {{ total }} értékben vásároltál.</span>
+    <app-purchase *ngFor="let purchase of purchases"
+        [productName]="purchase.getProductName()"
+        [price]="purchase.getPrice()"
+        [purchaseDateTime]="purchase.getDateTime()"
+        [username]="purchase.getUsername()">
+    </app-purchase> 
+</div>

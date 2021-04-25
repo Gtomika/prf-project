@@ -6,6 +6,7 @@ import { Events } from '../events.model';
 import { EventBrokerService } from 'ng-event-broker';
 import Swal from 'sweetalert2'
 import { Validators, FormControl } from '@angular/forms';
+import { AuthService } from '../guards/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -35,7 +36,8 @@ export class RegisterComponent implements OnInit {
     private router: Router, 
     private registerService: RegisterService,
     private loginService: LoginService, 
-    private eventService: EventBrokerService) { }
+    private eventService: EventBrokerService,
+    private authService: AuthService) { }
 
   ngOnInit(): void {
   }
@@ -73,12 +75,11 @@ export class RegisterComponent implements OnInit {
     this.eventService.publishEvent(Events.showLoading);
 
     this.registerService.registerUser(this.username, this.password).subscribe(response => {
-      console.log(response);
-      localStorage.setItem('username', this.username.toString()); //felhasználónév mentése
       //sikeres regisztáció, egyből bejelentkeztetés
       this.loginService.login(this.username, this.password).subscribe(response => {
           //login esemény küldése
           const admin = this.isAdmin(response);
+          this.authService.setCreditentials(this.username, this.password);
           this.eventService.publishEvent(Events.login, admin);
           this.router.navigate(['home']);
           //töltés elrejtése

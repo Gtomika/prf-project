@@ -16,12 +16,12 @@
             <mat-hint>Meg kell egyzniük.</mat-hint>
             <input matInput type="password" placeholder="jelszó..." [(ngModel)]="newPassword2">
         </mat-form-field>
-        <button mat-raised-button (click)="onUpdatePasswordClicked()">Jelszó cseréje</button>
+        <button mat-raised-button color="primary" (click)="onUpdatePasswordClicked()">Jelszó cseréje</button>
         <b class="userFormTitle" style="padding-top: 20px;">Felhasználó törlése</b>
         <mat-form-field style="display: block;">
             <mat-label>Jelszó</mat-label>
             <input matInput placeholder="Jelszó..." [(ngModel)]="deletePassword">
         </mat-form-field>
-        <button mat-raised-button (click)="onDeleteUser()">Törlés</button>
+        <button mat-raised-button color="primary" (click)="onDeleteUser()">Törlés</button>
     </div>
 </div>

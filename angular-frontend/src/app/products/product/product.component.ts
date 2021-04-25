@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { error } from 'selenium-webdriver';
+import { EventBrokerService } from 'ng-event-broker';
+import { Events } from 'src/app/events.model';
+import { AuthService } from 'src/app/guards/auth.service';
+import { PurchaseService } from 'src/app/purchases/purchase.service';
 import Swal from 'sweetalert2';
 import { ProductService } from '../product.service';
 
@@ -22,7 +25,7 @@ export class ProductComponent implements OnInit {
   @Input()
   imgPath: String = '';
 
-  username: string;
+  username: String;
 
   //ez kerül mutatásra, ha a kép betöltődött
   imageToShow: any;
@@ -30,14 +33,13 @@ export class ProductComponent implements OnInit {
   //jelzi, hogy betöltött-e a kép
   imageLoaded: boolean;
 
-  constructor(private productService: ProductService) { 
-    this.imageLoaded = false;
-    const localUsername = localStorage.getItem('username');
-    if(localUsername) {
-      this.username = localUsername;
-    } else {
-      this.username = '';
-    }
+  constructor(
+    private productService: ProductService, 
+    private authService: AuthService,
+    private purchaseService: PurchaseService,
+    private eventService: EventBrokerService) { 
+      this.imageLoaded = false;
+      this.username = authService.getUsername();
   }
 
   ngOnInit(): void {
@@ -74,12 +76,28 @@ export class ProductComponent implements OnInit {
       cancelButtonText: 'Mégse'
     }).then((result) => {
       if (result.isConfirmed) {
-         //TODO: mentés
-         Swal.fire({
-            icon: 'success',
-            title: 'Siker',
-            text: 'Mostantól egy ' + this.name + ' tulajdonosa vagy. A vásárlási előzményeidet megnézheted az előzmények menüben'
+          this.eventService.publishEvent(Events.showLoading);
+         //mentés a vásárlásokat tároló szerverre
+         const pw = this.authService.getPassword();
+         const timestamp = Date.now().toString();
+         this.purchaseService.savePurchase(this.username, pw, this.name, this.price, timestamp)
+         .subscribe(response => {
+            this.eventService.publishEvent(Events.hideLoading);
+            Swal.fire({
+              icon: 'success',
+              title: 'Siker',
+              text: 'Mostantól egy ' + this.name + ' tulajdonosa vagy. A vásárlási előzményeidet megnézheted az előzmények menüben'
+            });
+         }, error => {
+            this.eventService.publishEvent(Events.hideLoading);
+            console.log(error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Sikertelen vásárlás!',
+              text: error.error.message
+            });
          });
+         
       }
     });
   }

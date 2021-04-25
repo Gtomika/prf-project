@@ -5,6 +5,7 @@ import { LoginService } from './login.service';
 import { Events } from '../events.model';
 import Swal  from 'sweetalert2'
 import { Validators, FormControl } from '@angular/forms';
+import { AuthService } from '../guards/auth.service';
  
 @Component({
   selector: 'app-login',
@@ -30,7 +31,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private router: Router, 
     private loginService: LoginService,
-    private eventService: EventBrokerService) { }
+    private eventService: EventBrokerService,
+    private authService: AuthService) { }
 
   ngOnInit(): void {
   }
@@ -50,8 +52,9 @@ export class LoginComponent implements OnInit {
     this.loginService.login(this.username, this.password).subscribe(response => {
       console.log(JSON.stringify(response));
       //ha sikeres volt
-      localStorage.setItem('username', this.username.toString()); //csak a felirathoz kell
       const isAdmin = this.isAdmin(response);
+       //adatok elmentése
+       this.authService.setCreditentials(this.username, this.password);
       //bejelentkezési esemény küldése
       this.eventService.publishEvent(Events.login, isAdmin);
       //töltés elrejtése

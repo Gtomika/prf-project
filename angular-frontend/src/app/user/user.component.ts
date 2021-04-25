@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { EventBrokerService } from 'ng-event-broker';
 import Swal from 'sweetalert2';
 import { Events } from '../events.model'
+import { AuthService } from '../guards/auth.service';
 import { LoginService } from '../login/login.service';
 import { RegisterService } from '../register/register.service';
 
@@ -13,13 +14,13 @@ import { RegisterService } from '../register/register.service';
 })
 export class UserComponent implements OnInit {
 
-  username: string = '';
+  username: String = '';
 
-  password: String;
+  password: String = '';
 
-  newPassword1: String;
+  newPassword1: String = '';
 
-  newPassword2: String;
+  newPassword2: String = '';
 
   deletePassword: String = '';
 
@@ -27,39 +28,18 @@ export class UserComponent implements OnInit {
     private eventService: EventBrokerService,
     private registerService: RegisterService,
     private loginService: LoginService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) 
   {
+      this.username = authService.getUsername();
+      //jelszót is elkérhetnénk, de így "komolyabb"
       this.password = '';
       this.newPassword1 = '';
       this.newPassword2 = '';
   }
 
-  ngOnInit(): void {
-    const localUsername = localStorage.getItem('username');
-    if(localUsername) {
-      this.username = localUsername;
-    } else {
-      const validator = function(username: String) {
-        if(!username) {
-          return 'Kérlek add meg a felhasználóneved!';
-        }
-        return null;
-      }
-      //valamiért nincs a local storage-ban
-      Swal.fire({
-          title: 'Felhasználónév',
-          text: 'Valamiért nem találom a felhasználónevedet. Kérlek add meg!',
-          icon: 'question',
-          input: 'text',
-          inputValue: this.username,
-          inputPlaceholder: 'felhasználónév...',
-          focusCancel: false,
-          inputValidator: validator
-        }
-      );
-    }
-  }
+  ngOnInit(): void {}
 
   onUpdatePasswordClicked() {
     if(this.password == '') {

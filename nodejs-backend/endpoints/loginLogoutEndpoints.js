@@ -1,5 +1,6 @@
 const passport = require('passport');
 const mongoose = require('mongoose');
+const util = require('util');
 
 const userModel = mongoose.model('user');
 
@@ -53,6 +54,33 @@ const attachEndpoints = function(router) {
         }
     });
 
+    //login-hoz hasonló, de kizárólag a felhasználói adat ellenőrzésére. után nem lesz bejelentkeztetve
+    router.route('/authenticate').post((req, res, next) => {
+        if(req.body.username && req.body.password) {
+             //van név és jelszó: azonosítási stratégia választása
+             passport.authenticate('local', function(error, user) {
+                //visszakaptuk az authentikáció eredményét
+                if(error) {
+                    //az error itt lehet adatbázis agy authentikációs hiba is
+                    console.log(error);
+                    return res.status(200).send({message: 'invalid', isAdmin: false});
+                }
+                //belépési adatok jók, de admin-e?
+                userModel.findOne({username: req.body.username}, (error, user) => {
+                    if(error) {
+                        //hiba, tegyük fel, hogy nem admin
+                        res.status(200).send({message: 'valid', isAdmin: false});
+                    } 
+                    if(!user) {
+                        res.status(200).send({message: 'valid', isAdmin: false});
+                    }
+                    res.status(200).send({message: 'valid', isAdmin: user.isAdmin});
+                });
+            })(req, res);
+        } else {
+            return res.status(400).send({message:'Felhasználónév és jelszó megadása szükséges!', isAdmin: false});
+        }
+    });
 }
 
 module.exports = attachEndpoints;

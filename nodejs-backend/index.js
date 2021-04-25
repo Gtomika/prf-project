@@ -41,7 +41,17 @@ if(debug) {
       }
     app.use(cors(corsOptions));
 } else {
-    app.use(cors());
+    app.use((req, res, next) => {
+        res.set('Access-Control-Allow-Origin', req.headers.origin);
+        res.set('Access-Control-Allow-Credentials', 'true');
+        if (req.method === 'OPTIONS') {
+            // Send response to OPTIONS requests
+            res.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
+            res.set('Access-Control-Allow-Headers', 'Content-Type');
+            res.set('Access-Control-Max-Age', '3600');
+        }
+        next();
+    });
 }
 
 app.use(cookieParser());
@@ -53,9 +63,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //Az angular app felcsatlakoztatása (ha létezik). Ha nem létezik, akkor development módban vagyunk.
-const angularPathString = constants.angularDist + '/' + constants.angularFrontendName;
-const angularPath = path.join(__dirname, angularPathString);
-app.use(express.static(angularPath));
+const angularPath = path.join(__dirname, 'public');
+app.use(express.static(angularPath))
+    .set('views', path.join(__dirname, 'views'))
+    .set('view engine', 'ejs')
+    .get('/', (req, res) => {
+        res.render('pages/index');
+    });
 
 //router felrakása API routra
 app.use(constants.apiRoute, router);

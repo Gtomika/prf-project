@@ -1,0 +1,6 @@
+{
+"postgreURL":"jdbc:postgresql://localhost:5432/postgres",
+"postgreUser":"postgres",
+"postgrePassword": "prf_gaspar_pass",
+"nodeJsServerUrl": "http://localhost:3080"
+}

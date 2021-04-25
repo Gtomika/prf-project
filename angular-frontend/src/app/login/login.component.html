@@ -16,7 +16,7 @@
             <input matInput type="password" placeholder="jelszó..." [(ngModel)]="password" [formControl]="notEmptyPasswordControl">
         </mat-form-field>
         <div>
-            <button mat-raised-button (click)="onLoginClick()" style="margin: 20px; float: left; color: black">Bejelentkezés</button>
+            <button mat-raised-button color="primary" (click)="onLoginClick()" style="margin: 20px; float: left; color: black">Bejelentkezés</button>
             <u style="margin: 20px; float: right; color: black;" (click)="onRegisterClick()">Regisztráció</u>
         </div>
     </div>

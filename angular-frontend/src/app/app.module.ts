@@ -21,6 +21,8 @@ import {BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProductComponent } from './products/product/product.component';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle'; 
 import { MatIconModule } from '@angular/material/icon';
+import { PurchasesComponent } from './purchases/purchases.component';
+import { PurchaseComponent } from './purchases/purchase/purchase.component';
 
 
 @NgModule({
@@ -34,7 +36,9 @@ import { MatIconModule } from '@angular/material/icon';
     RegisterComponent,
     AdminComponent,
     UserComponent,
-    ProductComponent
+    ProductComponent,
+    PurchasesComponent,
+    PurchaseComponent
   ],
   imports: [
     BrowserModule,

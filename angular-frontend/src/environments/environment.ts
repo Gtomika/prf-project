@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  nodejsServerUrl: "http://localhost:3080"
+  nodejsServerUrl: "http://localhost:3080",
+  javaeeServerUrl: "http://localhost:8080"
 };
 
 /*

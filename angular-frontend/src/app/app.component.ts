@@ -89,6 +89,10 @@ export class AppComponent implements OnInit {
     this.router.navigate(['user']);
   }
 
+  onPurchaseHistoryClicked() {
+    this.router.navigate(['purchases']);
+  }
+
   onLoginLogoutClicked() {
     if(this.loggedIn) {
       //be van jelentkezve
@@ -109,9 +113,7 @@ export class AppComponent implements OnInit {
   updateWhenLoggedIn() {
     this.loggedIn = true;
     this.loginLogoutButtonText = 'Kijelentkezés';
-    //ezt a bejelentkezést végző komponens berakta a local storage-ba
-    const username = localStorage.getItem('username');
-    this.loginLogoutStatusText = 'Üdv, ' + username + '!';
+    this.loginLogoutStatusText = 'Üdv, ' + this.authService.getUsername() + '!';
     this.router.navigate(['home']);
   }
 

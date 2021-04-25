@@ -8,6 +8,7 @@ import { LoginGuard } from './guards/login.guard';
 import { HomepageComponent } from './homepage/homepage.component';
 import { LoginComponent } from './login/login.component';
 import { ProductsComponent } from './products/products.component';
+import { PurchasesComponent } from './purchases/purchases.component';
 import { RegisterComponent } from './register/register.component';
 import { UserComponent } from './user/user.component';
 
@@ -21,6 +22,7 @@ const routes: Routes = [
   {path: 'products', component: ProductsComponent, canActivate: [LoginGuard]},
   {path: 'about', component: AboutComponent, canActivate: [LoginGuard]},
   {path: 'user', component: UserComponent, canActivate: [LoginGuard]},
+  {path: 'purchases', component: PurchasesComponent, canActivate: [LoginGuard]},
   {path: 'admin', component: AdminComponent, canActivate: [LoginGuard, AdminGuard]},
   //wildcard a hibás URL-ek elfogására
   {path: '**', component: ErrorComponent}

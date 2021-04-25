@@ -5,25 +5,29 @@ megvásárolni.
 
 ## Angular
 
-Ez az angular-frontend mappában található.
+Ez az *angular-frontend* mappában található.
 
 ## NodeJS + MongoDB
 
-Ez a nodejs-backend mappában található.
+Ez a *nodejs-backend* mappában található.
 
 ## Java EE + PostgreSQL
 
-Ez a javaee-backend mappában található.
+Ez a *javaee-backend* mappában található. Spring Boot alapú.
 
 ## Fejleszői build
 
- - Angular app indítása: *ng serve* (**localhost:4200**)
- - NodeJS szerver indítása: *npm start* (**localhost:3080**)
+ - Angular app indítása: *ng serve* (**http://localhost:4200**)
+ - NodeJS szerver indítása: *npm start* (**http://localhost:3080**)
 
 A nodejs mapájában lévő **constants.json** fájlban a *isDebug* attribútumot 
 át kell állítani *true*-ra (de ez így van alapértelmezetten).
 
+ - JavaEE szerver indítása: *mvn spring-boot:run* (**http://localhost:8080**)
+
 ## Production build
+
+NodeJS + Angular esetén:
 
  - Angular app buildelése: *ng build --prod* (*dist* mappa létrejön)
  - A *dist* mappát át kell másolni a NodeJS szerver gyökér mappájába.
@@ -32,6 +36,11 @@ A nodejs mapájában lévő **constants.json** fájlban a *isDebug* attribútumo
 át kell állítani *false*-ra. 
 
  - Az így elkészült NodeJS mappába be kell rakni a **secrets.json** fájlt, ami tartalmazza a herokus URL-t és a MongoDB adatokat (ez a fájl nincs verziózva).
+
+A JavaEE szerver esetén:
+
+ - A főosztályában a DEBUG konstants-t át kell állítani *false*-ra
+ - A szerver erőforrásmappájába be kell rakni a **secrets.json**-t. Ez nincs verziózva.
 
 ## Dokumentáció
 
