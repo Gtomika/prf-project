@@ -19,7 +19,11 @@ Az alábbiak az alkalmazáshoz tartozó legfontosabb linkek.
 
 \begin{itemize}
 	\item \href{https://github.com/Gtomika/prf-project}{A projekt GitHub repozitóriuma}
+	\item \href{https://prf-project-gaspar.herokuapp.com}{Az alkalmazás Heroku-n.}
+	\item \href{https://prf-project-gaspar-javaee.herokuapp.com}{A JavaEE szerver Heroku-n.}
 \end{itemize}
+
+A NodeJS szerver adatbázisa a MongodDB Atlas-ban van hosztolva. A JavaEE szerver PostgreSQL adatbázisa az \href{https://www.elephantsql.com/}{ElephantSQL} ingyenes csomagjával van kitelepítve.
 
 \section{A fejlesztés menete}
 
@@ -76,7 +80,7 @@ Még itt elég sok a hiba, a későbbiekben ezen jelentősen javítok. Pl: bejel
 \subsection{Felhasználókezelés}
 
 \noindent
-\textbf{A commit teljes szövege:} \textit{ Backend: felhasználói adatok frissítése user endpointon. UI: sweetalert, material, felhasználói felületadatmódosításra}
+\textbf{A commit teljes szövege:} \textit{Backend: felhasználói adatok frissítése user endpointon. UI: sweetalert, material, felhasználói felületadatmódosításra}
 
 \bigskip
 \noindent
@@ -90,7 +94,7 @@ Szépítettem az oldal kinézetét, a Google material komponensek használatáva
 \subsection{Termékkezelés admin felületről}
 
 \noindent
-\textbf{A commit teljes szövege:} \textit{ Backend: product endpoint, Frontend: admin felület}
+\textbf{A commit teljes szövege:} \textit{Backend: product endpoint, Frontend: admin felület}
 
 \bigskip
 \noindent
@@ -104,31 +108,47 @@ Itt lehetőség van új termék létrehozására, meglévő frissítésére, és
 \subsection{Termék komponens, images endpoint}
 
 \noindent
-\textbf{A commit teljes szövege:} \textit{ Backend: images endpoint, Frontend: termék komponens}
+\textbf{A commit teljes szövege:} \textit{Backend: images endpoint, Frontend: termék komponens}
 
 \bigskip
 \noindent
-Ez a commit ... található.
+Ez a commit \href{https://github.com/Gtomika/prf-project/commit/d57c3f971a6aa08f9c6dffd355d62fdd5254c3b3}{itt} található.
 \bigskip
 
 A szerverhez hozzáadtam a \textit{/images} endpointot, amitől el lehet kérni az egyes termékekhez tartozó képeket. Angularban megcsináltam az egy terméket mutató komponenst. Ez a komponens elkéri a szervertől a termék képét, majd megjeleníti.
 
+\subsection{JavaEE szerver fejlesztése}
+
+\noindent
+\textbf{A commit teljes szövege:} \textit{JavaEE szerver: vásárlások kezelése }
+
+\bigskip
+\noindent
+Ez a commit \href{https://github.com/Gtomika/prf-project/commit/5dcc9df3c42db872387fee519fe37f45b69bf757}{itt} található.
+\bigskip
+
+Elkészítettem a \textit{Spring Boot} alapú java szervert. Ez kezeli és tárolja a felhasználók vásárlásait. A frontendhez hozzáadtam a vásárlási előzményeket. Az admin komponenst kibővítettem egy résszel, ahol a termékek bevételei lehet lekérni.
+
 \section{API pontok}
 
-Itt dokumentálom, hogy milyen API endpointokat lehet használni. Mindegyik endpoint a \textit{/api} mögött van. Ha az URL-ben nincs \textit{/api}, azt az angular fogja lekezelni, nem pedig a szerver.
+Itt dokumentálom, hogy milyen API endpointokat használ az alkalmazás.
 
-Például:
+\subsection{NodeJS szerver}
+
+Mindegyik endpoint a \textit{/api} mögött van. Például:
 
 \bigskip
 \begin{center}
 	\textit{http://localhost:3080/api/status}
 \end{center}
 
-\subsection{/status}
+Törekedtem arra, hogy az \textit{API} biztonságos legyen. Ahol csak lehet beállítottam, hogy csak bejelentkezett klienstől fogadjon kérést a szerver. Ahol egy felhasználó adatait módosítjuk, ott szükség van az adott felhasználó felhasználónevére és jelszavára. Komoly következményekkel járó hívások, pl termékek hozzáadása vagy törlése esetén admin felhasználónév és jelszó kell.
+
+\subsubsection{/status}
 
 Ez csak GET-re válaszol, és egyszerűen visszaküld egy kis szöveget. Arra használható, hogy megnézzük hogy működik-e a szerver. Az endpointok a nodeJS mappa endpoints almappájában vannak definiálva, kivéve a \textit{/status}, mert az annyira egyszerű.
 
-\subsection{/login}
+\subsubsection{/login}
 
 Ide csak POST-olni lehet, és meg kell adni a felhasználónevet és jelszót. Ha ezek jók, akkor a bejelentkeztetés megtörténik.
 
@@ -157,11 +177,28 @@ A választ JSONben küldi:
 \noindent
 Az angular nézi az \textit{isAdmin} értékét, hogy tudja, hogy admin jelentkezett-e be.
 
-\subsection{/logout}
+\subsubsection{/logout}
 
 A \textit{/login} párja, ami kijelentkezteti a felhasználót. Csak POST-ot fogad, nem vár semmilyen adatot és akkor sem dob hibát, ha nem volt senki bejelentkezve.
 
-\subsection{/user}
+\subsubsection{/authenticate}
+
+A \textit{/login}-hoz hasonlóan működik, viszont nem jelentkezteti be a felhasználót, csak megmondja, hogy a a kapott adatok 
+érvényesek-e. A \textit{JavaEE} szerver ezt hívja meg, hogy ellenőrizze a kapott felhasználóneveket és jelszavakat.
+
+Csak \textit{POST}-ot fogad, a kérés törzsében meg kell adni a felhasználónevet és a jelszót (pont mint a \textit{/login} esetén).
+
+Eredménye egy \textit{JSON}, ami a következőképpen néz ki:
+
+\bigskip
+\begin{lstlisting}
+{
+ "message": "valid",
+ "isAdmin": "false"
+}
+\end{lstlisting}
+
+\subsubsection{/user}
 
 Felhasználókezelő endpoint, ami POST-ot, PUT-ot és DELETE-et támogat.
 
@@ -182,7 +219,7 @@ Csak akkor lesz változtatás, ha a felhasználó be van jelentkezve, és a jele
 
 DELETE-tel felhasználó törlés kell. PUT-hoz hasonlóan itt is küldeni kell a felhasználónevet és a jelszót, csak akkor fog végrehajtódni, ha be vagyunk jelentkezve és a jelszó helyes.
 
-\subsection{/product}
+\subsubsection{/product}
 
 Ezen az endpointon kérhetőek le, vagy módosíthatóak a termékek. Mindegyik híváshoz be kell, hogy jelentkezzünk. Azokat hívásokat, amik a termékek adatbázisát megváltoztatják, csak admin hajthatja végre.
 
@@ -220,7 +257,9 @@ Ezen az endpointon kérhetőek le, vagy módosíthatóak a termékek. Mindegyik 
 }
 \end{lstlisting}
 
-\subsection{/images}
+Az alkalmazás biztosít az admin felületen opciót \textit{JSON} feltöltésére, amivel egy új terméket lehet megadni vagy egy meglévőt frissíteni. Egy ilyen példa \textit{JSON}-t beraktam a \textit{docs} mappába \textit{imaginaryPiece.json} néven.
+
+\subsubsection{/images}
 
 Ez csak \textit{GET}-et fogad, és lehetőség van vele lekérni a termékekhez tartozó képeket. Az \textit{URL}-ben egy \textit{imageName} nevő paramétert kell megadni, ami megmondja a szervernek, hogy melyik képet kell visszaküldeni. Az angular ezt a termék \textit{imgPath} attribútumából állítja elő. 
 
@@ -234,6 +273,47 @@ Például így lehet a 'Gyalog' nevű termék képét elkérni (debug módban):
 
 Csak bejelentkezett klienstől fogad kéréseket. A válasz maga a kép lesz (\textit{Content-Type: image/jpeg}). 
 
+\subsection{JavaEE szerver}
+
+A NodeJS szerverhez hasonlóan itt is a \textit{/api} mögött vannak az endpointok. Itt is törekedtem a biztonságossá tételre, felhasználónevek és jelszavak kérésével.
+
+\subsubsection{/purchase}
+
+Vásárlásokat kezelő endpoint. \textbf{POST} esetén elment egy vásárlást. A következő formájú \textit{JSON}-t várja:
+
+\bigskip
+\begin{lstlisting}
+{
+ "username": "valaki",
+ "password": "valaki_jelszava",
+ "productName": "termek_neve",
+ "price": "termek_ara",
+ "dateTime": "vasarlas_idopontja"
+}
+\end{lstlisting}
+
+A termék ára itt még szövegesen kell hogy legyen, pl \textit{1000 Ft}. Ezt majd a szerver alakítja számmá. A \textit{dateTime} attribútum a vásárlás időpontja (\textit{UNIX} timestamp).
+
+\textit{GET} krést is fogad, ezzel egy felhasználó vásárlásait lehet lekérni. Meg kell adni a felhasználónevet és jelszót. Például:
+
+\begin{center}
+	\textit{http://localhost:8080/api/purchase?username=valaki\&password=valaki\_jelszava}
+\end{center}
+
+A hívás eredménye egy \textit{JSON} tömb, amiben a vásárlások vannak felsorolva.
+
+\subsubsection{/productTotal}
+
+Ez az endpoint csak \textbf{GET}-et fogad, és csak admin által hívható. A következő formában várja a paramétereket:
+
+\begin{center}
+	\textit{http://localhost:8080/api/productTotal?username=admin
+		\newline
+		\&password=admin\_jelszava\&productName=termek\_neve}
+\end{center}
+
+\textit{JSON} tömbben visszaadja az összes vásárlást, ahol az adott terméket vették meg. A teljes bevétel és az utolsó vásárlás meghatározását már az angular végzi.
+
 \section{Bemutató}
 
 Ahogy a követelményekben megvan, lehetőség van a belépni a következő felhasználóval:
@@ -243,6 +323,10 @@ Ahogy a követelményekben megvan, lehetőség van a belépni a következő felh
 	\item Jelszó: PRF2021
 \end{itemize}
 
-Ez a felhasználó egyben admin is. Lehet regisztrálni persze más felhasználót is, az nem lesz admin.
+Ez a felhasználó egyben admin is, ezért az admin felületet is ki lehet próbálni vele. Lehet regisztrálni persze más felhasználót is, az nem lesz admin.
+
+Az első \textit{HTTP} kérés a NodeJS és a JavaEE szerverek felé beletelik egy kis időbe, mivel a Heroku "altatja" az alkalmazást, ha egy ideje nem használták. Van azonban töltést jelző elem, ezért látszik, hogy mikor vár éppen válaszra.
+
+A bal felső sarokban lévő menüvel választhatunk komponenst. Mindenhova viszonylag jól kinéző felhasználói felületet készítettem, ezért a komponensek használata (pl: vásárlás, jelszó csere) elég egyszerű.
 
 \end{document}

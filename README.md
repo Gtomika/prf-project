@@ -30,17 +30,14 @@ A nodejs mapájában lévő **constants.json** fájlban a *isDebug* attribútumo
 NodeJS + Angular esetén:
 
  - Angular app buildelése: *ng build --prod* (*dist* mappa létrejön)
- - A *dist* mappát át kell másolni a NodeJS szerver gyökér mappájába.
- 
-A nodejs mapájában lévő **constants.json** fájlban a *isDebug* attribútumot 
-át kell állítani *false*-ra. 
-
+ - A *dist* mappa tartalmát át kell másolni a NodeJS szerver *public* mappájába.
+ - A nodejs mapájában lévő **constants.json** fájlban a *isDebug* attribútumot át kell állítani *false*-ra. 
  - Az így elkészült NodeJS mappába be kell rakni a **secrets.json** fájlt, ami tartalmazza a herokus URL-t és a MongoDB adatokat (ez a fájl nincs verziózva).
 
 A JavaEE szerver esetén:
 
  - A főosztályában a DEBUG konstants-t át kell állítani *false*-ra
- - A szerver erőforrásmappájába be kell rakni a **secrets.json**-t. Ez nincs verziózva.
+ - A szerver erőforrásmappájába be kell rakni a **secrets.json**-t, ami a heroku-s URL-t és a PostgreSQL adatokat tartalmazza. Ez nincs verziózva.
 
 ## Dokumentáció
 
