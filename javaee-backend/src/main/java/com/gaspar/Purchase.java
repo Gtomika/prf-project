@@ -8,13 +8,16 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * Egy vásárlás adatait tartalmazó osztály.
+ * Egy vásárlás adatait tartalmazó osztály, ami JPA segítségével rekordként be tud 
+ * kerülni a "purchases" táblába.
  * @author Gáspár Tamás
  */
 @Entity
 @Table(name = "purchases")
 public class Purchase {
 
+	//Konstansok az adatbázis oszlopainak és a JSON üzenetek mezőinek, -----------------------------------
+	
 	public static final String USERNAME = "username";
 	
 	public static final String PRODUCT_NAME = "productName";
@@ -24,7 +27,7 @@ public class Purchase {
 	public static final String DATE_TIME = "dateTime";
 	
 	/**
-	 * A vásárlás azonosítója. Kulcs.
+	 * A vásárlás azonosítója. Kulcs, automatikusan generált.
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,27 +36,30 @@ public class Purchase {
 	/**
 	 * A vásárlást végző felhasználó neve.
 	 */
-	@Column(name = "username")
+	@Column(name = USERNAME) 
 	private String username;
 	
 	/**
 	 * A termék neve, amit megvásárolt.
 	 */
-	@Column(name = "productname")
+	@Column(name = "productname") //valamiért itt nem szereti a nagybetűket
 	private String productName;
 	
 	/**
 	 * A vásárlás értéke forintban.
 	 */
-	@Column(name = "price")
+	@Column(name = PRICE)
 	private Integer price;
 	
 	/**
 	 * A vásárlás időpontja UNIX timestamp-ként.
-	 */
-	@Column(name = "datetime")
+	 */ 
+	@Column(name = "datetime") //valamiért itt nem szereti a nagybetűket
 	private Long dateTime;
 	
+	/**
+	 * toString, generált
+	 */
 	@Override
 	public String toString() {
 		return "Purchase [id=" + id + ", username=" + username + ", productName=" + productName + ", price=" + price
@@ -61,7 +67,7 @@ public class Purchase {
 	}
 	
 	/**
-	 * Átalakítja az PAI kérésekben érkező szöveges árat számra.
+	 * Átalakítja az API kérésekben érkező szöveges árat számra.
 	 * @param priceString A szöveges ár. Pl: '1000 Ft'.
 	 * @return Az ár számként.
 	 * @throws IllegalArgumentException Ha a szöveges ár formátuma nem megfelelő.

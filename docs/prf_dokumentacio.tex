@@ -13,14 +13,17 @@
 
 \tableofcontents
 
-\section{Linkek}
+\section{Bevezető, linkek}
 
-Az alábbiak az alkalmazáshoz tartozó legfontosabb linkek.
+Projektmunkám témája egy olyan "komolytalan" online áruház, ahol a különböző sakkfigurákat lehet megvásárolni. Bár ezekből 
+csak 6 darab van, és ez a 6 benne van az alapkínálatban, azért felvehető új "termék" is.
+
+Az alábbiak az alkalmazáshoz tartozó legfontosabb linkek:
 
 \begin{itemize}
 	\item \href{https://github.com/Gtomika/prf-project}{A projekt GitHub repozitóriuma}
-	\item \href{https://prf-project-gaspar.herokuapp.com}{Az alkalmazás Heroku-n.}
-	\item \href{https://prf-project-gaspar-javaee.herokuapp.com}{A JavaEE szerver Heroku-n.}
+	\item \href{https://prf-project-gaspar.herokuapp.com}{Az alkalmazás Heroku-n.} Ez hostolja az angular alkalmazást is.
+	\item \href{https://prf-project-gaspar-javaee.herokuapp.com}{A JavaEE szerver Heroku-n.} Ezt nem nagyon érdemes direkben megkattintani, mert csak egy kis üzenet jön vissza, a lényeg az API pontok mögött van.
 \end{itemize}
 
 A NodeJS szerver adatbázisa a MongodDB Atlas-ban van hosztolva. A JavaEE szerver PostgreSQL adatbázisa az \href{https://www.elephantsql.com/}{ElephantSQL} ingyenes csomagjával van kitelepítve.
@@ -28,7 +31,7 @@ A NodeJS szerver adatbázisa a MongodDB Atlas-ban van hosztolva. A JavaEE szerve
 \section{A fejlesztés menete}
 
 Itt részletesebben leírom, hogy egyes commitok mit adtak hozzá, vagy változtattak meg. Minden esetben megadok egy linket is a 
-commitra, hogy ez ellenőrizhető legyen. A commitokban ezt a dokumentációt is megváltoztatom, de ezt nem írom itt le. Az olyan commitok nem kerülnek ide, ahol csak a dokumentációt frissítettem. 
+commitra, hogy ez ellenőrizhető legyen. A commitokban ezt a dokumentációt is megváltoztatom, de ezt nem írom itt le. Az olyan commitok nem kerülnek ide, ahol csak a dokumentációt frissítettem. Az is előfordulhat, hogy kisebb változtatások nincsenek feltüntetve a commit tartalmában.
 
 \subsection{Alapozás}
 
@@ -63,6 +66,8 @@ Megalkottam a felhasználói felületet az angularban. A főkomponens tartalmazz
 	\item About: információ
 \end{itemize}
 
+A későbbiekben még szükség lesz további komponensekre is.
+
 \subsection{Authentikáció}
 
 \noindent
@@ -89,7 +94,7 @@ Ez a commit \href{https://github.com/Gtomika/prf-project/commit/6794668ee38e4793
 
 Szerver oldalon bővítettem a \textit{/user} endpointot, hogy lehessen felhasználói jelszót változtatni, és felhasználót törölni. Kliens oldalon ehhez egy felületet hoztam létre, ahol a bejelentkezett felhasználó módosíthatja a jelszavát vagy törölheti magát.
 
-Szépítettem az oldal kinézetét, a Google material komponensek használatával, és az alap JavaScript alert dialógus helyett egy alert könyvtárra tértem át.
+Szépítettem az oldal kinézetét, a Google material komponensek használatával, és az alap JavaScript alert dialógus helyett egy alert könyvtárra tértem át. Importáltam egy kis könyvtárat, ami szép töltést jelző ikonokat tud mutatni.
 
 \subsection{Termékkezelés admin felületről}
 
@@ -117,6 +122,8 @@ Ez a commit \href{https://github.com/Gtomika/prf-project/commit/d57c3f971a6aa08f
 
 A szerverhez hozzáadtam a \textit{/images} endpointot, amitől el lehet kérni az egyes termékekhez tartozó képeket. Angularban megcsináltam az egy terméket mutató komponenst. Ez a komponens elkéri a szervertől a termék képét, majd megjeleníti.
 
+Amennyiben új terméket adunk hozzá az admin felületről, akkor egy \textit{"image not found"} feliratú kép fog visszajönni. Azt nem implementáltam, hogy az új termék leíró \textit{JSON} mellett képet is lehessen feltölteni.
+
 \subsection{JavaEE szerver fejlesztése}
 
 \noindent
@@ -127,7 +134,7 @@ A szerverhez hozzáadtam a \textit{/images} endpointot, amitől el lehet kérni 
 Ez a commit \href{https://github.com/Gtomika/prf-project/commit/5dcc9df3c42db872387fee519fe37f45b69bf757}{itt} található.
 \bigskip
 
-Elkészítettem a \textit{Spring Boot} alapú java szervert. Ez kezeli és tárolja a felhasználók vásárlásait. A frontendhez hozzáadtam a vásárlási előzményeket. Az admin komponenst kibővítettem egy résszel, ahol a termékek bevételei lehet lekérni.
+Elkészítettem a \textit{Spring Boot} alapú java szervert. Ez kezeli és tárolja a felhasználók vásárlásait. A frontendhez hozzáadtam a vásárlási előzményeket. Az admin komponenst kibővítettem egy résszel, ahol a termékek bevételei lehet lekérni. Néhány helyen kicsit eltértem a gyakorlattól, lásd \ref{javaee}.
 
 \section{API pontok}
 
@@ -273,9 +280,12 @@ Például így lehet a 'Gyalog' nevű termék képét elkérni (debug módban):
 
 Csak bejelentkezett klienstől fogad kéréseket. A válasz maga a kép lesz (\textit{Content-Type: image/jpeg}). 
 
-\subsection{JavaEE szerver}
+\subsection{JavaEE szerver}\label{javaee}
 
 A NodeJS szerverhez hasonlóan itt is a \textit{/api} mögött vannak az endpointok. Itt is törekedtem a biztonságossá tételre, felhasználónevek és jelszavak kérésével.
+
+\textbf{MEGJEGYZÉS:} A Java szerver esetén néhány dolgot máshogy csináltam, mint ahogy a gyakorlaton be lett mutatva. Ezért a 
+Java forrásfájlokat alaposan dokumentáltam és kommenteztem \textit{javadoc} formában. 
 
 \subsubsection{/purchase}
 

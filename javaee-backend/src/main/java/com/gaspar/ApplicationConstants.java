@@ -12,7 +12,11 @@ import org.springframework.boot.json.JsonParserFactory;
 
 /**
  * Tárolja az alkalmazásnak kellő konstansokat, pl adatbázisok elérhetőségét. A konstansok 
- * tartalma más debug és release mód esetén ({@link JavaeeBackendApplication#DEBUG}). Singleton.
+ * tartalma más debug és release mód esetén ({@link JavaeeBackendApplication#DEBUG}-al állítható). 
+ * Singleton osztály.
+ * A gyakorlattal ellentétben ezt nem az application.properties-be raktam, mert függnek a 
+ * {@link JavaeeBackendApplication#DEBUG} értékétől. Debug módban a constants.json-ból olvas be, 
+ * nem debug módban pedig a secrets.json-ból (ez nincs verziózva).
  * @author Gáspár Tamás
  */
 public class ApplicationConstants {
@@ -23,8 +27,8 @@ public class ApplicationConstants {
 	private static ApplicationConstants instance;
 	
 	/**
-	 * Ha még nincsenek beolvasva a konstansok, akkor beolvassa őket.
-	 * @return A konstansok.
+	 * Ha még nincsenek beolvasva a konstansok, akkor beolvassa őket. 
+	 * @return Az osztálypéldány.
 	 */
 	public static ApplicationConstants instance() {
 		if(instance == null) {
@@ -37,7 +41,7 @@ public class ApplicationConstants {
 				//release mód, secrets.json olvasása
 				constantsAsString = getResourceFileAsString("secrets.json");
 			}
-			//átalakítás mappá
+			//átalakítás map-re
 			JsonParser parser = JsonParserFactory.getJsonParser();
 			var parsed = parser.parseMap(constantsAsString);
 			instance = new ApplicationConstants(parsed);
@@ -51,7 +55,8 @@ public class ApplicationConstants {
 	private final Map<String, String> constants;
 	
 	/**
-	 * Átalakítja a beolvasott JSON fájlt string - string párokká.
+	 * Létrehozza a példányt és átalakítja a beolvasott JSON fájlt string - string párokká (eredetileg string - object, 
+	 * de az alkalmazásnak elég a string - string).
 	 */
 	private ApplicationConstants(Map<String, Object> parsed) {
 		//minden átalakítása stringgé
@@ -71,7 +76,7 @@ public class ApplicationConstants {
 		return constants.get(key);
 	}
 	
-	//Beolvasó metódusok ----------------------------------------------------------------------------
+	//Fájl beolvasó segéd metódusok ----------------------------------------------------------------------------
 	
 	@SuppressWarnings("resource")
 	public static String getResourceFileAsString(String fileName) {
@@ -88,6 +93,8 @@ public class ApplicationConstants {
 	    ClassLoader classLoader = ApplicationConstants.class.getClassLoader();
 	    return classLoader.getResourceAsStream(fileName);
 	}
+	
+	//Konstans azonosítók ----------------------------------------------------------------------------------
 	
 	/**
 	 * Ezzel a kulccsal lehet elkérni az adatbázis URL-jét.

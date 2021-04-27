@@ -8,20 +8,22 @@ import org.springframework.context.annotation.Configuration;
 
 
 /**
- * Ez az osztály mondja meg, hogy hogyan kell elérni az adatbázist.
+ * Ez az osztály mondja meg, hogy hogyan kell elérni az adatbázist. Az adatok függnek a 
+ * {@link JavaeeBackendApplication#DEBUG} értékétől. Erről részletesebben a {@link ApplicationConstants} 
+ * osztályban.
  * @author Gáspár Tamás
  */
 @Configuration
 public class DataSourceConfig {
 	
 	/**
-	 * Postgre driver neve.
+	 * PostgreSQL driver osztály neve. Ez mindig ugyanez, ezért nem az {@link ApplicationConstants}-ba raktam.
 	 */
 	private static final String POSTGRE_DRIVER_NAME = "org.postgresql.Driver";
 	
 	/**
 	 * Létrehozza az adatbázis elérhetőségét. Ez más debug és release módban.
-	 * @return Infó.
+	 * @return A Spring használja fel.
 	 */
 	@Bean
 	public DataSource datasource() {

@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
 /**
- * Ez az osztály HTTP kérést tud küldeni a nodeJS szervernek, 
+ * Ez az osztály HTTP kérést tud küldeni a NodeJS szervernek (/authenticate endpoint), 
  * és megnézni, hogy egy felhasználónév és jelszó páros helyes-e.
  * @author Gáspár Tamás
  */
@@ -29,11 +29,15 @@ public class Authenticator {
 	private static final int TIMEOUT = 3000;
 	
 	/**
-	 * NodeJs szever URL-je. Ide küldi a http kéréseket.
+	 * NodeJs szever URL-je. Ide küldi a http kéréseket. Ez más debug és nem debug mód esetén
 	 */
 	private String nodeJsServerUrl;
 	
+	/**
+	 * Konstruktor
+	 */
 	public Authenticator() {
+		//szerver URL kérése a konstansok közül.
 		nodeJsServerUrl = ApplicationConstants.instance()
 				.getConstant(ApplicationConstants.NODE_JS_SERVER_URL_KEY);
 	}
@@ -42,21 +46,23 @@ public class Authenticator {
 	 * Megmondja a felhasználói adatokból, hogy van-e ilyen felhasználó, és hogy admin-e.
 	 * @param username A felhasználónév.
 	 * @param password A jelszó.
-	 * @return {@link AuthResult} ami tartalmazza az eredmény.
+	 * @return {@link AuthResult} ami tartalmazza az eredményt.
 	 */
 	public AuthResult authenticate(String username, String password) {
+		//HTTP kliens készítése, ez kezeli az időkorlátot
 		HttpClient httpClient = HttpClient.create()
 				  .option(ChannelOption.CONNECT_TIMEOUT_MILLIS,TIMEOUT)
 				  .responseTimeout(Duration.ofMillis(TIMEOUT))
 				  .doOnConnected(conn -> 
-				    conn.addHandlerLast(new ReadTimeoutHandler(TIMEOUT, TimeUnit.MILLISECONDS))
-				      .addHandlerLast(new WriteTimeoutHandler(TIMEOUT, TimeUnit.MILLISECONDS)));
+				    	conn.addHandlerLast(new ReadTimeoutHandler(TIMEOUT, TimeUnit.MILLISECONDS))
+				  .addHandlerLast(new WriteTimeoutHandler(TIMEOUT, TimeUnit.MILLISECONDS)));
 
+		//webkliens készítése, ez küldi a kérést a NodeJS szervernek
 		WebClient client = WebClient.builder().baseUrl(nodeJsServerUrl)
 			.clientConnector(new ReactorClientHttpConnector(httpClient))
-				  .build();
+			.build();
 		
-		//kérés törzs
+		//kérés törzs megadása: a felhasználónév és jelszó kerül be
 		var request = new JSONObject();
 		request.put("username", username);
 		request.put("password", password);
@@ -71,9 +77,11 @@ public class Authenticator {
 				.bodyToMono(String.class)
 				.block();
 		
+		//a válasz átalakítása map-é
 		JsonParser parser = JsonParserFactory.getJsonParser();
 		var responseJson = parser.parseMap(response);
 		
+		//a válasz értelmezése
 		boolean valid = responseJson.get("message").toString().equals("valid");
 		boolean admin = responseJson.get("isAdmin").toString().equals("true");
 		return new AuthResult(valid, admin);
